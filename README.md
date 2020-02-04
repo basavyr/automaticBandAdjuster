@@ -14,8 +14,12 @@ The constant is used for adjusting the experimental bands (both wobbling and yra
 -> start with the pure experimental energies (**normalized to the first state**)
 ->get an arbitrary set of parameters $X_k=\{A_1,A_2,A_3,\theta\}$ and compute $E_\text{RMS}=f(E^{exp}_{X_k},E^{th}_{X_k})$ 
 -> check where the highest *unoptimized* region exists: 1st half, 2nd half or middle:
--> calculate the normal differences $\Delta_E=E_{th}-E_{exp}$
+->**create plot for *exp. vs. theory* comparison** (step G1)
+-> calculate the normal differences $\Delta_E=E_{th}-E_{exp}$ 
 * if $\Delta \geq 0$ then subtract a constant value from $E_{exp}$
 * if $\Delta < 0$ then add a constant value from $E_{exp}$
 
 -> apply the adjustment for the experimental bands  
+-> recalculate RMS and obtain a new `RMS_stack`
+-> obtain the new set of parameters $X_k^{new}$ for which the RMS stack is minimal
+-> redo the **G1** step: the graphical representation of the energies with the new parameters, but using the initial experimental energies.
