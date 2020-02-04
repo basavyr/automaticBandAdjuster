@@ -17,7 +17,6 @@ class TestApp
 {
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> startPoint;
-    std::chrono::time_point<std::chrono::high_resolution_clock> endPoint;
 
 public:
     TestApp();
@@ -25,6 +24,7 @@ public:
 
 public:
     void RunApp();
+    void Sleep(int);
     void StopApp();
 };
 
