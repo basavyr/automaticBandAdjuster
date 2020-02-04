@@ -52,7 +52,7 @@ public:
 public:
     std::vector<double> dataExp;
     std::vector<double> dataTh;
-    std::vector<double> dataExp_Subtracted;
+    static std::vector<double> dataExp_Subtracted;
     //testing containers
 public:
     //test container for yrast
@@ -94,12 +94,14 @@ public:
         double avg_Right;
         int states_Left;
         int states_Right;
+        bool side;
         halfSize_tuple()
         {
             avg_Left = 0.0;
             avg_Right = 0.0;
             states_Left = 0;
             states_Right = 0;
+            side = 0;
         }
     };
 
@@ -112,17 +114,17 @@ public:
 
     //container for the adjusted bands
     //modify only the fist part of the energy container (1ST HALF ADJUST)
-    static std::vector<double> joinLeft(std::vector<double> &, double adjustQuanta);
+    static std::vector<double> joinLeft(std::vector<double> &, double);
 
     //container for the adjusted bands
     //modify only the second part of the energy container (2ND HALF ADJUST)
-    static std::vector<double> joinRight(std::vector<double> &, double adjustQuanta);
+    static std::vector<double> joinRight(std::vector<double> &, double);
 
     //function which decides what side to modify and what adjuster to implement
-    double sidePicker(halfSize_tuple);
+    static int sidePicker(halfSize_tuple &);
 
     //the actual band adjuster
-    double adjuster();
+    static void adjuster(std::vector<double> &, halfSize_tuple &);
 };
 
 #endif // BANDADJUSTER_HH

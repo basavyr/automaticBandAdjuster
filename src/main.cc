@@ -11,6 +11,8 @@ void YRAST()
     }
     auto xx = adjuster->averageDeviation(x);
     adjuster->tuplePrinter(xx);
+    // adjuster->sidePicker(xx);
+    adjuster->adjuster(adjuster->dataExp, xx);
 }
 
 void WOBBLING()
@@ -24,10 +26,11 @@ void WOBBLING()
     }
     auto xx = adjuster->averageDeviation(x);
     adjuster->tuplePrinter(xx);
+    adjuster->sidePicker(xx);
 }
 
 int main()
 {
     YRAST();
-    WOBBLING();
+    // WOBBLING();
 }

@@ -88,3 +88,86 @@ BandAdjuster::halfSize_tuple BandAdjuster::averageDeviation(std::vector<double> 
     avg_result->avg_Right = static_cast<double>(avg_result->avg_Right / avg_result->states_Right);
     return *avg_result;
 }
+
+std::vector<double> BandAdjuster::joinLeft(std::vector<double> &data, double adjustQuanta)
+{
+    std::vector<double> result;
+    auto nullvector = std::vector<double>{};
+    auto halfSize = static_cast<size_t>(data.size() / 2);
+
+    for (int i = 0; i < halfSize; ++i)
+    {
+        result.emplace_back(data.at(i) + adjustQuanta);
+    }
+    for (int i = halfSize; i < data.size(); ++i)
+    {
+        result.emplace_back(data.at(i));
+    }
+    //check if the container was properly created
+    if (result.size() == data.size())
+        return result;
+    return nullvector;
+}
+
+std::vector<double> BandAdjuster::joinRight(std::vector<double> &data, double adjustQuanta)
+{
+    std::vector<double> result;
+    auto nullvector = std::vector<double>{};
+    auto halfSize = static_cast<size_t>(data.size() / 2);
+
+    for (int i = 0; i < halfSize; ++i)
+    {
+        result.emplace_back(data.at(i));
+    }
+    for (int i = halfSize; i < data.size(); ++i)
+    {
+        result.emplace_back(data.at(i) + adjustQuanta);
+    }
+    //check if the container was properly created
+    if (result.size() == data.size())
+        return result;
+    return nullvector;
+}
+
+int BandAdjuster::sidePicker(BandAdjuster::halfSize_tuple &tuple)
+{
+    //decide which side has bigger factor in deviation
+    if (abs(tuple.avg_Left) > abs(tuple.avg_Right))
+    {
+        tuple.side = 0;
+        std::cout << "The bigger factor in deviation is on LEFT\n";
+    }
+    else
+    {
+        tuple.side = 1;
+        std::cout << "The bigger factor in deviation is on RIGHT\n";
+    }
+    if (tuple.side)
+        return 0;
+    return 1;
+}
+
+void BandAdjuster::adjuster(std::vector<double> &data, BandAdjuster::halfSize_tuple &tuple)
+{
+    //start with the LEFT side
+    if (!sidePicker(tuple))
+    {
+        auto x = joinLeft(data, tuple.avg_Left);
+        std::cout << x.size() << "\n";
+        for (auto &&n : x)
+        {
+            std::cout << n << " , ";
+        }
+        std::cout << std::endl;
+    }
+    else
+    {
+        auto x = joinRight(data, tuple.avg_Right);
+        std::cout << x.size() << "\n";
+        for (auto &&n : x)
+        {
+            std::cout << n << " , ";
+        }
+        std::cout << std::endl;
+    }
+}
