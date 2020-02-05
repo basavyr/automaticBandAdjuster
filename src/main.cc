@@ -54,8 +54,26 @@ void Bands()
     RootMeanSquare::generateExperimentalSet(data->yrastExp, data->wobbExp, adjuster->dataExp);
     RootMeanSquare::searchMinimum(data->spin1, data->spin2, data->yrastExp, data->wobbExp, *bestParams);
     RootMeanSquare::generateTheoreticalSet(*data, adjuster->dataTh, bestParams->i1_min, bestParams->i3_min, bestParams->i3_min, bestParams->theta_min);
+    RootMeanSquare::antiGenerationTheoretical(*adjuster, *data, adjuster->yrastTh, adjuster->wobbTh);
     RootMeanSquare::antiGenerationExperimental(*adjuster, *data, adjuster->yrastExp, adjuster->wobbExp);
-    RootMeanSquare::antiGnerationTheoretical(*adjuster, *data, adjuster->yrastTh, adjuster->wobbTh);
+    arrayPrinter(adjuster->dataExp);
+
+    auto deltasYrast = adjuster->DELTA_Calculation(data->yrastExp, adjuster->yrastTh);
+    auto weightYrast = adjuster->averageDeviation(deltasYrast);
+    // arrayPrinter(deltasYrast);
+    adjuster->tuplePrinter(weightYrast);
+    std::vector<double> newArrayYrast;
+    adjuster->adjuster(data->yrastExp, weightYrast, newArrayYrast);
+
+    auto deltasWobb = adjuster->DELTA_Calculation(data->wobbExp, adjuster->wobbTh);
+    auto weightWobb = adjuster->averageDeviation(deltasWobb);
+    // arrayPrinter(deltasWobb);
+    adjuster->tuplePrinter(weightWobb);
+    std::vector<double> newArrayWobb;
+    adjuster->adjuster(data->wobbExp, weightWobb, newArrayWobb);
+    RootMeanSquare::generateAnySet(newArrayYrast, newArrayWobb, adjuster->dataExp);
+    arrayPrinter(adjuster->dataExp);
+    // arrayPrinter(newArray);
 }
 
 int main()

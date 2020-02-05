@@ -199,7 +199,7 @@ public:
         else
             outputArray.clear();
     }
-    
+
     //obtain the experimental small data sets per each band
     template <typename T, typename T2>
     static void antiGenerationExperimental(T &object, T2 &data, std::vector<double> &yrastExp, std::vector<double> &wobbExp)
@@ -223,7 +223,7 @@ public:
     }
 
     template <typename T, typename T2>
-    static void antiGnerationTheoretical(T &object, T2 &data, std::vector<double> &yrastTh, std::vector<double> &wobbTh)
+    static void antiGenerationTheoretical(T &object, T2 &data, std::vector<double> &yrastTh, std::vector<double> &wobbTh)
     {
         if (yrastTh.size() && wobbTh.size())
         {
@@ -239,6 +239,49 @@ public:
             for (int i = data.spin1.size(); i < object.dataTh.size(); ++i)
             {
                 wobbTh.emplace_back(object.dataTh.at(i));
+            }
+        }
+    }
+
+    template <typename T>
+    static void generateAnySet(std::vector<T> &set1, std::vector<T> &set2, std::vector<T> &output)
+    {
+        if (output.size())
+        {
+            output.clear();
+        }
+        else
+        {
+            for (int i = 0; i < set1.size(); ++i)
+            {
+                output.emplace_back(set1.at(i));
+            }
+            for (int i = 0; i < set2.size(); ++i)
+            {
+                output.emplace_back(set2.at(i));
+            }
+        }
+    }
+
+    template <typename T, typename T2, typename T3>
+    static void antiGenerateAnySet(T3 &objectForSize, std::vector<T> &sourceArray, std::vector<T2> &subset1, std::vector<T2> &subset2)
+    {
+        //clear the subsets of already full.
+        //fresh arrays
+        if (subset1.size() && subset2.size())
+        {
+            subset1.clear();
+            subset2.clear();
+        }
+        else
+        {
+            for (int i = 0; i < objectForSize.yrastTh.size(); ++i)
+            {
+                subset1.emplace_back(sourceArray.at(i));
+            }
+            for (int i = objectForSize.yrastTh.size(); i < objectForSize.dataTh.size(); ++i)
+            {
+                subset2.emplace_back(sourceArray.at(i));
             }
         }
     }
