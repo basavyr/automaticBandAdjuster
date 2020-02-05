@@ -89,44 +89,42 @@ BandAdjuster::halfSize_tuple BandAdjuster::averageDeviation(std::vector<double> 
     return *avg_result;
 }
 
-std::vector<double> BandAdjuster::joinLeft(std::vector<double> &data, double adjustQuanta)
+void BandAdjuster::joinLeft(std::vector<double> &data, double adjustQuanta, std::vector<double> &source)
 {
-    std::vector<double> result;
+    // std::vector<double> result;
     auto nullvector = std::vector<double>{};
     auto halfSize = static_cast<size_t>(data.size() / 2);
 
     for (int i = 0; i < halfSize; ++i)
     {
-        result.emplace_back(data.at(i) + adjustQuanta);
+        source.emplace_back(data.at(i) + adjustQuanta);
     }
     for (int i = halfSize; i < data.size(); ++i)
     {
-        result.emplace_back(data.at(i));
+        source.emplace_back(data.at(i));
     }
     //check if the container was properly created
-    if (result.size() == data.size())
-        return result;
-    return nullvector;
+    // if (result.size() == data.size())
+    // return nullvector;
 }
 
-std::vector<double> BandAdjuster::joinRight(std::vector<double> &data, double adjustQuanta)
+void BandAdjuster::joinRight(std::vector<double> &data, double adjustQuanta, std::vector<double> &source)
 {
-    std::vector<double> result;
+    // std::vector<double> result;
     auto nullvector = std::vector<double>{};
     auto halfSize = static_cast<size_t>(data.size() / 2);
 
     for (int i = 0; i < halfSize; ++i)
     {
-        result.emplace_back(data.at(i));
+        source.emplace_back(data.at(i));
     }
     for (int i = halfSize; i < data.size(); ++i)
     {
-        result.emplace_back(data.at(i) + adjustQuanta);
+        source.emplace_back(data.at(i) + adjustQuanta);
     }
     //check if the container was properly created
-    if (result.size() == data.size())
-        return result;
-    return nullvector;
+    // if (result.size() == data.size())
+    // return nullvector;
 }
 
 int BandAdjuster::sidePicker(BandAdjuster::halfSize_tuple &tuple)
@@ -142,32 +140,65 @@ int BandAdjuster::sidePicker(BandAdjuster::halfSize_tuple &tuple)
         tuple.side = 1;
         std::cout << "The bigger factor in deviation is on RIGHT\n";
     }
-    if (tuple.side)
+    if (!tuple.side)
         return 0;
     return 1;
 }
 
-void BandAdjuster::adjuster(std::vector<double> &data, BandAdjuster::halfSize_tuple &tuple)
+void BandAdjuster::adjuster(std::vector<double> &data, BandAdjuster::halfSize_tuple &tuple, std::vector<double> &source)
 {
+    std::vector<double> x = {};
     //start with the LEFT side
     if (!sidePicker(tuple))
     {
-        auto x = joinLeft(data, tuple.avg_Left);
-        std::cout << x.size() << "\n";
-        for (auto &&n : x)
-        {
-            std::cout << n << " , ";
-        }
-        std::cout << std::endl;
+        joinLeft(data, tuple.avg_Left, source);
+        // for (auto &&n : x)
+        // {
+        //     std::cout << n << " , ";
+        // }
+        // std::cout << std::endl;
     }
     else
     {
-        auto x = joinRight(data, tuple.avg_Right);
-        std::cout << x.size() << "\n";
-        for (auto &&n : x)
-        {
-            std::cout << n << " , ";
-        }
-        std::cout << std::endl;
+        joinRight(data, tuple.avg_Right, source);
+        // for (auto &&n : x)
+        // {
+        //     std::cout << n << " , ";
+        // }
+        // std::cout << std::endl;
+    }
+    std::cout << "Original container:"
+              << "\n";
+    for (auto &&n : data)
+    {
+        std::cout << n << " ";
+    }
+    std::cout << "\n";
+    std::cout << "Adjusted container:"
+              << "\n";
+    for (auto &&n : source)
+    {
+        std::cout << n << " ";
+    }
+    std::cout << "\n";
+    // std::cout << "The RMS for this new set is:"
+    //           << "\n";
+    // std::cout << RMS_Calculation<double>(data, x) << "\n";
+}
+
+void PlotGraphs::PopulateArrays(std::ofstream &out, std::vector<double> &x, std::vector<double> &v1, std::vector<double> &v2)
+{
+    bool ok = 0;
+    if (v1.size() != v2.size() || x.size() != v2.size())
+    {
+        std::cout << "Cannot plot this set";
+        std::cout << "\n";
+        ok = 1;
+        return;
+    }
+    for (int i = 0; i < v1.size() && !ok; ++i)
+    {
+        out << x.at(i) << " " << v1.at(i) << " " << v2.at(i);
+        out << "\n";
     }
 }

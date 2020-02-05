@@ -11,6 +11,7 @@
 #include <memory>
 #include <future>
 #include <thread>
+#include <fstream>
 
 //This class contains a benchmark routine
 //It performs a time measurement on construction->destruction process and returns the number of miliseconds
@@ -52,7 +53,7 @@ public:
 public:
     std::vector<double> dataExp;
     std::vector<double> dataTh;
-    static std::vector<double> dataExp_Subtracted;
+    std::vector<double> dataExp_Subtracted;
     //testing containers
 public:
     //test container for yrast
@@ -64,7 +65,26 @@ public:
     template <typename T>
     static double RMS_Calculation(std::vector<T> &exp, std::vector<T> &th)
     {
-        return 1;
+        if (exp.size() != th.size())
+            return 6969;
+        double sum = 0;
+
+        //failsafe
+        int checkCounter = 0;
+
+        for (int i = 0; i < exp.size(); ++i)
+        {
+            auto currentValue = pow(exp.at(i) - th.at(i), 2.0);
+            if (!isnan(currentValue))
+            {
+                sum += currentValue;
+                checkCounter++;
+            }
+        }
+        auto result = static_cast<double>(sqrt(sum / exp.size()));
+        if (!isnan(result) && checkCounter == exp.size())
+            return result;
+        return 6969;
     }
 
     template <typename T>
@@ -114,17 +134,29 @@ public:
 
     //container for the adjusted bands
     //modify only the fist part of the energy container (1ST HALF ADJUST)
-    static std::vector<double> joinLeft(std::vector<double> &, double);
+    static void joinLeft(std::vector<double> &, double, std::vector<double> &);
 
     //container for the adjusted bands
     //modify only the second part of the energy container (2ND HALF ADJUST)
-    static std::vector<double> joinRight(std::vector<double> &, double);
+    static void joinRight(std::vector<double> &, double, std::vector<double> &);
 
     //function which decides what side to modify and what adjuster to implement
     static int sidePicker(halfSize_tuple &);
 
     //the actual band adjuster
-    static void adjuster(std::vector<double> &, halfSize_tuple &);
+    static void adjuster(std::vector<double> &, halfSize_tuple &, std::vector<double> &);
+};
+
+class PlotGraphs
+{
+public:
+    PlotGraphs();
+    ~PlotGraphs();
+    static void PopulateArrays(std::ofstream &, std::vector<double> &, std::vector<double> &, std::vector<double> &);
+    // std::string file1 = "../output/plot1.dat";
+    // std::string file2 = "../output/plot2.dat";
+    // std::ofstream outband1();
+    // std::ofstream outband2();
 };
 
 #endif // BANDADJUSTER_HH
