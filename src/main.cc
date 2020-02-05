@@ -1,4 +1,5 @@
 #include "../include/bandAdjuster.hh"
+#include "../include/plotGraph.hh"
 
 void YRAST()
 {

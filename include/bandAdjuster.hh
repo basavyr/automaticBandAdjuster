@@ -147,16 +147,5 @@ public:
     static void adjuster(std::vector<double> &, halfSize_tuple &, std::vector<double> &);
 };
 
-class PlotGraphs
-{
-public:
-    PlotGraphs();
-    ~PlotGraphs();
-    static void PopulateArrays(std::ofstream &, std::vector<double> &, std::vector<double> &, std::vector<double> &);
-    // std::string file1 = "../output/plot1.dat";
-    // std::string file2 = "../output/plot2.dat";
-    // std::ofstream outband1();
-    // std::ofstream outband2();
-};
 
 #endif // BANDADJUSTER_HH
