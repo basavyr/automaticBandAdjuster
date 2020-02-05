@@ -4,8 +4,7 @@
 //BENCHMARK TOOL
 TestApp::TestApp()
 {
-    std::cout << "App is working fine..."
-              << "\n";
+    // std::cout << "App is working fine..."       << "\n";
     startPoint = std::chrono::high_resolution_clock::now();
     // Sleep(1);
 }
@@ -18,8 +17,7 @@ TestApp::~TestApp()
                   << "\n";
         return;
     }
-    std::cout << "Class container stopped with status OK"
-              << "\n";
+    // std::cout << "Class container stopped with status OK" << "\n";
     //calls the method for getting the duration
     StopApp();
 }
@@ -42,20 +40,20 @@ void TestApp::StopApp()
     auto start = std::chrono::time_point_cast<std::chrono::microseconds>(startPoint).time_since_epoch().count();
     auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endPoint).time_since_epoch().count();
     auto durationMS = (end - start) * 0.001;
-    std::cout << "and was alive for " << durationMS << " ms..."
+    std::cout << "Process ended after " << durationMS << " ms..."
               << "\n";
 }
 
 BandAdjuster::BandAdjuster()
 {
     const std::string message = "The class container for adjusting experimental band has been CREATED...\n";
-    std::cout << message;
+    // std::cout << message;
 }
 
 BandAdjuster::~BandAdjuster()
 {
     const std::string message = "The class container for adjusting experimental band has been DESTROYED...\n";
-    std::cout << message;
+    // std::cout << message;
 }
 
 double BandAdjuster::BandSubtraction(std::vector<double> &array, double subtractor)
@@ -185,4 +183,3 @@ void BandAdjuster::adjuster(std::vector<double> &data, BandAdjuster::halfSize_tu
     //           << "\n";
     // std::cout << RMS_Calculation<double>(data, x) << "\n";
 }
-

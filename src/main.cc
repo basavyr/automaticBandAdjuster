@@ -1,5 +1,6 @@
 #include "../include/bandAdjuster.hh"
 #include "../include/plotGraph.hh"
+#include "../include/RootMeanSquare.hh"
 
 void YRAST()
 {
@@ -27,8 +28,36 @@ void WOBBLING()
     PlotGraphs::PopulateArrays(file, data->spin2, data->wobbExp, test);
 }
 
+template <typename T>
+void arrayPrinter(std::vector<T> &vec)
+{
+    for (int i = 0; i < vec.size(); ++i)
+    {
+        if (i == vec.size() - 1)
+        {
+            std::cout << vec.at(i);
+        }
+        else
+        {
+            std::cout << vec.at(i) << " , ";
+        }
+    }
+    std::cout << "\n";
+}
+
 int main()
 {
-    YRAST();
-    WOBBLING();
+    auto timer = std::make_unique<TestApp>();
+    auto adjuster = std::make_unique<BandAdjuster>();
+    auto data = std::make_unique<Data_ENSDF>();
+    auto bestParams = std::make_unique<RootMeanSquare::minParamSet>();
+
+    std::ofstream params("../output/params.dat");
+
+    RootMeanSquare::searchMinimum<double>(data->spin1, data->spin2, data->yrastExp, data->wobbExp, *bestParams);
+    RootMeanSquare::paramPrinter<RootMeanSquare::minParamSet>(params, *bestParams);
+    std::cout << "Exp energy before the adjustment\n";
+    arrayPrinter(data->yrastExp);
+    // YRAST();
+    // WOBBLING();
 }
