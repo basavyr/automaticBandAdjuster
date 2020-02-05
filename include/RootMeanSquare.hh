@@ -165,8 +165,6 @@ public:
     {
         //only do this for an empty and fresh output
         if (!outputArray.size())
-            return;
-        else
         {
             for (auto i = 0; i < object1.size(); ++i)
             {
@@ -177,6 +175,8 @@ public:
                 outputArray.emplace_back(object2.at(i));
             }
         }
+        else
+            outputArray.clear();
     }
 
     template <typename T>
@@ -184,8 +184,6 @@ public:
     {
         //only do this for an empty and fresh output
         if (!outputArray.size())
-            return;
-        else
         {
             auto yrast = [&](auto spin) { return RootMeanSquare::energyExpression(0, spin, i1, i2, i3, theta); };
             auto wobbling = [&](auto spin) { return RootMeanSquare::energyExpression(0, spin, i1, i2, i3, theta); };
@@ -196,6 +194,51 @@ public:
             for (int i = 0; i < object.spin2.size(); ++i)
             {
                 outputArray.emplace_back(wobbling(object.spin2.at(i)));
+            }
+        }
+        else
+            outputArray.clear();
+    }
+    
+    //obtain the experimental small data sets per each band
+    template <typename T, typename T2>
+    static void antiGenerationExperimental(T &object, T2 &data, std::vector<double> &yrastExp, std::vector<double> &wobbExp)
+    {
+        if (yrastExp.size() && wobbExp.size())
+        {
+            yrastExp.clear();
+            wobbExp.clear();
+        }
+        else
+        {
+            for (int i = 0; i < data.spin1.size(); ++i)
+            {
+                yrastExp.emplace_back(object.dataExp.at(i));
+            }
+            for (int i = data.spin1.size(); i < object.dataExp.size(); ++i)
+            {
+                wobbExp.emplace_back(object.dataExp.at(i));
+            }
+        }
+    }
+
+    template <typename T, typename T2>
+    static void antiGnerationTheoretical(T &object, T2 &data, std::vector<double> &yrastTh, std::vector<double> &wobbTh)
+    {
+        if (yrastTh.size() && wobbTh.size())
+        {
+            yrastTh.clear();
+            wobbTh.clear();
+        }
+        else
+        {
+            for (int i = 0; i < data.spin1.size(); ++i)
+            {
+                yrastTh.emplace_back(object.dataTh.at(i));
+            }
+            for (int i = data.spin1.size(); i < object.dataTh.size(); ++i)
+            {
+                wobbTh.emplace_back(object.dataTh.at(i));
             }
         }
     }

@@ -55,6 +55,11 @@ public:
     std::vector<double> dataExp;
     //vontainer for storing the theoretical data
     std::vector<double> dataTh;
+
+    std::vector<double> yrastTh;
+    std::vector<double> wobbTh;
+    std::vector<double> yrastExp;
+    std::vector<double> wobbExp;
     //vontainer for storing the experimental data after subtraction
     // std::vector<double> dataExp_Subtracted;
     //vontainer for storing the theoretical data after subtraction

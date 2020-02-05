@@ -45,19 +45,35 @@ void arrayPrinter(std::vector<T> &vec)
     std::cout << "\n";
 }
 
-int main()
+void Bands()
 {
-    auto timer = std::make_unique<TestApp>();
     auto adjuster = std::make_unique<BandAdjuster>();
     auto data = std::make_unique<Data_ENSDF>();
     auto bestParams = std::make_unique<RootMeanSquare::minParamSet>();
 
-    std::ofstream params("../output/params.dat");
+    RootMeanSquare::generateExperimentalSet(data->yrastExp, data->wobbExp, adjuster->dataExp);
+    RootMeanSquare::searchMinimum(data->spin1, data->spin2, data->yrastExp, data->wobbExp, *bestParams);
+    RootMeanSquare::generateTheoreticalSet(*data, adjuster->dataTh, bestParams->i1_min, bestParams->i3_min, bestParams->i3_min, bestParams->theta_min);
+    RootMeanSquare::antiGenerationExperimental(*adjuster, *data, adjuster->yrastExp, adjuster->wobbExp);
+    RootMeanSquare::antiGnerationTheoretical(*adjuster, *data, adjuster->yrastTh, adjuster->wobbTh);
+}
 
-    RootMeanSquare::searchMinimum<double>(data->spin1, data->spin2, data->yrastExp, data->wobbExp, *bestParams);
-    RootMeanSquare::paramPrinter<RootMeanSquare::minParamSet>(params, *bestParams);
-    std::cout << "Exp energy before the adjustment\n";
-    arrayPrinter(data->yrastExp);
+int main()
+{
+    auto timer = std::make_unique<TestApp>();
+    // auto adjuster = std::make_unique<BandAdjuster>();
+    // auto data = std::make_unique<Data_ENSDF>();
+    // auto bestParams = std::make_unique<RootMeanSquare::minParamSet>();
+    // std::ofstream params("../output/params.dat");
+
+    // RootMeanSquare::searchMinimum<double>(data->spin1, data->spin2, data->yrastExp, data->wobbExp, *bestParams);
+    // RootMeanSquare::paramPrinter<RootMeanSquare::minParamSet>(params, *bestParams);
+    // std::cout << "Exp energy before the adjustment\n";
+    // RootMeanSquare::generateExperimentalSet(data->yrastExp, data->wobbExp, adjuster->dataExp_Subtracted);
+    // arrayPrinter(adjuster->dataExp_Subtracted);
+
     // YRAST();
     // WOBBLING();
+
+    Bands();
 }
