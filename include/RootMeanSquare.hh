@@ -164,7 +164,8 @@ public:
     static void generateExperimentalSet(T &object1, T &object2, std::vector<double> &outputArray)
     {
         //only do this for an empty and fresh output
-        if (!outputArray.size())
+        if (outputArray.size())
+            outputArray.clear();
         {
             for (auto i = 0; i < object1.size(); ++i)
             {
@@ -175,8 +176,6 @@ public:
                 outputArray.emplace_back(object2.at(i));
             }
         }
-        else
-            outputArray.clear();
     }
 
     template <typename T>
@@ -209,7 +208,6 @@ public:
             yrastExp.clear();
             wobbExp.clear();
         }
-        else
         {
             for (int i = 0; i < data.spin1.size(); ++i)
             {
@@ -230,7 +228,6 @@ public:
             yrastTh.clear();
             wobbTh.clear();
         }
-        else
         {
             for (int i = 0; i < data.spin1.size(); ++i)
             {
@@ -250,16 +247,13 @@ public:
         {
             output.clear();
         }
-        else
+        for (int i = 0; i < set1.size(); ++i)
         {
-            for (int i = 0; i < set1.size(); ++i)
-            {
-                output.emplace_back(set1.at(i));
-            }
-            for (int i = 0; i < set2.size(); ++i)
-            {
-                output.emplace_back(set2.at(i));
-            }
+            output.emplace_back(set1.at(i));
+        }
+        for (int i = 0; i < set2.size(); ++i)
+        {
+            output.emplace_back(set2.at(i));
         }
     }
 
@@ -273,7 +267,6 @@ public:
             subset1.clear();
             subset2.clear();
         }
-        else
         {
             for (int i = 0; i < objectForSize.yrastTh.size(); ++i)
             {

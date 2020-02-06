@@ -51,8 +51,14 @@ void Bands()
     auto data = std::make_unique<Data_ENSDF>();
     auto bestParams = std::make_unique<RootMeanSquare::minParamSet>();
 
+    std::ofstream params("../output/params.dat");
+    std::ofstream file1("../output/plot1.dat");
+    std::ofstream file2("../output/plot2.dat");
+
     RootMeanSquare::generateExperimentalSet(data->yrastExp, data->wobbExp, adjuster->dataExp);
     RootMeanSquare::searchMinimum(data->spin1, data->spin2, data->yrastExp, data->wobbExp, *bestParams);
+    RootMeanSquare::paramPrinter<RootMeanSquare::minParamSet>(params, *bestParams);
+
     RootMeanSquare::generateTheoreticalSet(*data, adjuster->dataTh, bestParams->i1_min, bestParams->i3_min, bestParams->i3_min, bestParams->theta_min);
     RootMeanSquare::antiGenerationTheoretical(*adjuster, *data, adjuster->yrastTh, adjuster->wobbTh);
     RootMeanSquare::antiGenerationExperimental(*adjuster, *data, adjuster->yrastExp, adjuster->wobbExp);
@@ -71,8 +77,21 @@ void Bands()
     adjuster->tuplePrinter(weightWobb);
     std::vector<double> newArrayWobb;
     adjuster->adjuster(data->wobbExp, weightWobb, newArrayWobb);
-    RootMeanSquare::generateAnySet(newArrayYrast, newArrayWobb, adjuster->dataExp);
     arrayPrinter(adjuster->dataExp);
+    std::cout << adjuster->dataExp.size() << "\n";
+    arrayPrinter(newArrayYrast);
+    arrayPrinter(newArrayWobb);
+    RootMeanSquare::generateAnySet(newArrayYrast, newArrayWobb, adjuster->dataExp);
+    // RootMeanSquare::generateAnySet(newArrayYrast, newArrayWobb, adjuster->dataExp);
+    arrayPrinter(adjuster->dataExp);
+    std::cout << adjuster->dataExp.size() << "\n";
+    std::cout << adjuster->RMS_Calculation(adjuster->dataExp, adjuster->dataTh) << "\n";
+    RootMeanSquare::searchMinimum(data->spin1, data->spin2, adjuster->yrastExp, adjuster->wobbExp, *bestParams);
+    PlotGraphs::PopulateArrays(file1, data->spin1, data->yrastExp, adjuster->yrastExp);
+    arrayPrinter(data->yrastExp);
+    arrayPrinter(adjuster->yrastExp);
+    RootMeanSquare::paramPrinter<RootMeanSquare::minParamSet>(params, *bestParams);
+
     // arrayPrinter(newArray);
 }
 

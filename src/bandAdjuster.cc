@@ -66,8 +66,8 @@ BandAdjuster::halfSize_tuple BandAdjuster::averageDeviation(std::vector<double> 
     auto avg_result = new halfSize_tuple();
     auto halfSize = static_cast<size_t>(array.size() / 2);
 
-    std::cout << "full size" << array.size() << "\n";
-    std::cout << "half size" << halfSize << "\n";
+    // std::cout << "full size" << array.size() << "\n";
+    // std::cout << "half size" << halfSize << "\n";
     for (int i = 0; i < halfSize; ++i)
     {
         avg_result->avg_Left += array.at(i);
@@ -81,8 +81,8 @@ BandAdjuster::halfSize_tuple BandAdjuster::averageDeviation(std::vector<double> 
     }
     if (halfSize % 2 == 0)
         avg_result->states_Right = avg_result->states_Right - 1;
-    std::cout << "states left " << avg_result->states_Left << "\n";
-    std::cout << "states right " << avg_result->states_Right << "\n";
+    // std::cout << "states left " << avg_result->states_Left << "\n";
+    // std::cout << "states right " << avg_result->states_Right << "\n";
     avg_result->avg_Right = static_cast<double>(avg_result->avg_Right / avg_result->states_Right);
     return *avg_result;
 }
@@ -131,12 +131,12 @@ int BandAdjuster::sidePicker(BandAdjuster::halfSize_tuple &tuple)
     if (abs(tuple.avg_Left) > abs(tuple.avg_Right))
     {
         tuple.side = 0;
-        std::cout << "The bigger factor in deviation is on LEFT\n";
+        // std::cout << "The bigger factor in deviation is on LEFT\n";
     }
     else
     {
         tuple.side = 1;
-        std::cout << "The bigger factor in deviation is on RIGHT\n";
+        // std::cout << "The bigger factor in deviation is on RIGHT\n";
     }
     if (!tuple.side)
         return 0;
