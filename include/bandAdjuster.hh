@@ -51,9 +51,20 @@ public:
     ~BandAdjuster();
 
 public:
+    //vontainer for storing the experimental data
     std::vector<double> dataExp;
+    //vontainer for storing the theoretical data
     std::vector<double> dataTh;
-    std::vector<double> dataExp_Subtracted;
+
+    std::vector<double> yrastTh;
+    std::vector<double> wobbTh;
+    std::vector<double> yrastExp;
+    std::vector<double> wobbExp;
+    //vontainer for storing the experimental data after subtraction
+    // std::vector<double> dataExp_Subtracted;
+    //vontainer for storing the theoretical data after subtraction
+    // std::vector<double> dataTh_Subtracted;
+
     //testing containers
 public:
     //test container for yrast
@@ -63,7 +74,7 @@ public:
     //methods for band calculus
 public:
     template <typename T>
-    static double RMS_Calculation(std::vector<T> &exp, std::vector<T> &th)
+    static T RMS_Calculation(std::vector<T> &exp, std::vector<T> &th)
     {
         if (exp.size() != th.size())
             return 6969;
@@ -146,6 +157,5 @@ public:
     //the actual band adjuster
     static void adjuster(std::vector<double> &, halfSize_tuple &, std::vector<double> &);
 };
-
 
 #endif // BANDADJUSTER_HH
